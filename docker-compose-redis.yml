@@ -1,0 +1,17 @@
+networks:
+  kbo-reservation-network:
+    external: true
+
+services:
+  redis-cache:
+    image: redis:7.2.4-alpine3.19
+    container_name: redis-cache
+    ports:
+      - 6379:6379
+    restart: unless-stopped
+    networks:
+      - kbo-reservation-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 10
