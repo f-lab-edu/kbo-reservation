@@ -2,6 +2,7 @@ package com.kbo.stadium.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.kbo.exception.CustomAlreadyExistsException;
 import com.kbo.exception.CustomNotExistsException;
@@ -23,10 +24,22 @@ public class StadiumService {
 
 	@Transactional
 	public Stadium save(String name, int capacity) {
-		if (stadiumRepository.findByName(name).isPresent()) {
+		// 검증 수행
+		validateInputs(name, capacity);
+
+		if (stadiumRepository.existsByName(name)) {
 			throw new CustomAlreadyExistsException("Already exists name: " + name);
 		}
 
 		return stadiumRepository.save(new Stadium(name, capacity));
+	}
+
+	private void validateInputs(String name, int capacity) {
+		if (!StringUtils.hasText(name)) {
+			throw new IllegalArgumentException("Invalid stadium name: " + name);
+		}
+		if (capacity <= 0) {
+			throw new IllegalArgumentException("Invalid stadium capacity: " + capacity);
+		}
 	}
 }

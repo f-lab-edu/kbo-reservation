@@ -20,9 +20,12 @@ class TeamRepositoryTest {
 	@Autowired
 	private TeamRepository teamRepository;
 
+	private static final String NAME = "잠실야구장";
+	private static final int CAPACITY = 25_000;
+
 	@Test
 	void should_saveTeam_when_validInput() {
-		Stadium stadium = stadiumRepository.save(new Stadium("잠실야구장", 25000));
+		Stadium stadium = stadiumRepository.save(new Stadium(NAME, CAPACITY));
 		Team team = new Team("두산베어스", stadium);
 
 		Team result = teamRepository.save(team);
