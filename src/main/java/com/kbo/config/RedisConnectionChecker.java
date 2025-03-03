@@ -1,17 +1,20 @@
 package com.kbo.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Component
-@RequiredArgsConstructor
 public class RedisConnectionChecker {
+	private static final Logger log = LoggerFactory.getLogger(RedisConnectionChecker.class);
 	private final RedisConnectionFactory redisConnectionFactory;
+
+	public RedisConnectionChecker(RedisConnectionFactory redisConnectionFactory) {
+		this.redisConnectionFactory = redisConnectionFactory;
+	}
 
 	@PostConstruct
 	public void checkRedisConnection() {
