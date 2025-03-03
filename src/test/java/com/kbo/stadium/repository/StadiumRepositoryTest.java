@@ -7,10 +7,12 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kbo.stadium.entity.Stadium;
 
 @SpringBootTest
+@Transactional
 class StadiumRepositoryTest {
 	@Autowired
 	private StadiumRepository stadiumRepository;

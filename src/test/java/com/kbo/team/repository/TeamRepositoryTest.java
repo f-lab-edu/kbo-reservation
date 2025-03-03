@@ -5,12 +5,14 @@ import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kbo.stadium.entity.Stadium;
 import com.kbo.stadium.repository.StadiumRepository;
 import com.kbo.team.entity.Team;
 
 @SpringBootTest
+@Transactional
 class TeamRepositoryTest {
 	@Autowired
 	private StadiumRepository stadiumRepository;
