@@ -7,13 +7,13 @@ services:
     image: mysql
     container_name: mysql-database
     build:
-      dockerfile: Dockerfile
-      context: ./database
+      dockerfile: database/Dockerfile
+      context: database
     environment:
       - MYSQL_DATABASE=kbo-reserve
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     ports:
-      - 3306:3306
+      - "3306:3306"
     restart: unless-stopped
     networks:
       - kbo-reservation-network

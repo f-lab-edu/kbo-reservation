@@ -8,12 +8,13 @@ import com.kbo.exception.CustomNotExistsException;
 import com.kbo.stadium.entity.Stadium;
 import com.kbo.stadium.repository.StadiumRepository;
 
-import lombok.RequiredArgsConstructor;
-
 @Service
-@RequiredArgsConstructor
 public class StadiumService {
 	private final StadiumRepository stadiumRepository;
+
+	public StadiumService(StadiumRepository stadiumRepository) {
+		this.stadiumRepository = stadiumRepository;
+	}
 
 	public Stadium getStadium(long id) {
 		return stadiumRepository.findById(id)

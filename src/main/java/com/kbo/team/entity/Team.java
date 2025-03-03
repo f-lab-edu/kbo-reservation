@@ -11,14 +11,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "team")
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Team {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,12 +27,24 @@ public class Team {
 	@JoinColumn(name = "stadium_id")
 	private Stadium stadium;
 
-	private void setStadium(Stadium stadium) {
-		this.stadium = stadium;
+	protected Team() {
+
 	}
 
 	public Team(String name, Stadium stadium) {
 		this.name = name;
 		setStadium(stadium);
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public Stadium getStadium() {
+		return stadium;
+	}
+
+	private void setStadium(Stadium stadium) {
+		this.stadium = stadium;
 	}
 }

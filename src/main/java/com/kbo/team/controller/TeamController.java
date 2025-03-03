@@ -9,13 +9,14 @@ import com.kbo.team.controller.request.TeamRequest;
 import com.kbo.team.controller.response.TeamResponse;
 import com.kbo.team.service.TeamService;
 
-import lombok.RequiredArgsConstructor;
-
 @RestController
 @RequestMapping("/teams")
-@RequiredArgsConstructor
 public class TeamController {
 	private final TeamService teamService;
+
+	public TeamController(TeamService teamService) {
+		this.teamService = teamService;
+	}
 
 	@PostMapping
 	public TeamResponse save(@RequestBody TeamRequest teamRequest) {

@@ -9,13 +9,15 @@ import com.kbo.stadium.service.StadiumService;
 import com.kbo.team.entity.Team;
 import com.kbo.team.repository.TeamRepository;
 
-import lombok.RequiredArgsConstructor;
-
 @Service
-@RequiredArgsConstructor
 public class TeamService {
 	private final TeamRepository teamRepository;
 	private final StadiumService stadiumService;
+
+	public TeamService(TeamRepository teamRepository, StadiumService stadiumService) {
+		this.teamRepository = teamRepository;
+		this.stadiumService = stadiumService;
+	}
 
 	@Transactional
 	public Team save(String name, Long stadiumId) {

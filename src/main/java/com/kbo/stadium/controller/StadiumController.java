@@ -9,13 +9,14 @@ import com.kbo.stadium.controller.request.StadiumRequest;
 import com.kbo.stadium.controller.response.StadiumResponse;
 import com.kbo.stadium.service.StadiumService;
 
-import lombok.RequiredArgsConstructor;
-
 @RestController
 @RequestMapping("/stadiums")
-@RequiredArgsConstructor
 public class StadiumController {
 	private final StadiumService stadiumService;
+
+	public StadiumController(StadiumService stadiumService) {
+		this.stadiumService = stadiumService;
+	}
 
 	@PostMapping
 	public StadiumResponse save(@RequestBody StadiumRequest stadiumRequest) {

@@ -37,5 +37,5 @@ out/
 .vscode/
 
 ### Env ###
-.env
+docker/.env
 database.yml

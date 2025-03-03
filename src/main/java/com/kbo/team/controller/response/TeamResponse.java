@@ -2,23 +2,34 @@ package com.kbo.team.controller.response;
 
 import com.kbo.team.entity.Team;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-
-@Getter
-@Builder
-@AllArgsConstructor
 public class TeamResponse {
-	private String teamName;
-	private String stadiumName;
-	private int stadiumCapacity;
+	private final String teamName;
+	private final String stadiumName;
+	private final int stadiumCapacity;
+
+	public TeamResponse(String teamName, String stadiumName, int stadiumCapacity) {
+		this.teamName = teamName;
+		this.stadiumName = stadiumName;
+		this.stadiumCapacity = stadiumCapacity;
+	}
+
+	public String getTeamName() {
+		return teamName;
+	}
+
+	public String getStadiumName() {
+		return stadiumName;
+	}
+
+	public int getStadiumCapacity() {
+		return stadiumCapacity;
+	}
 
 	public static TeamResponse from(Team team) {
-		return TeamResponse.builder()
-			.teamName(team.getName())
-			.stadiumName(team.getStadium().getName())
-			.stadiumCapacity(team.getStadium().getCapacity())
-			.build();
+		return new TeamResponse(
+			team.getName(),
+			team.getStadium().getName(),
+			team.getStadium().getCapacity()
+		);
 	}
 }
