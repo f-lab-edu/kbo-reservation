@@ -3,7 +3,23 @@ spring:
     name: kbo-reservation
   profiles:
     active: local
+  config:
+    import: classpath:database.yml
   data:
     redis:
       host: localhost
       port: 6379
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/kbo-reserve
+    username: ${mysql.username}
+    password: ${mysql.password}
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
