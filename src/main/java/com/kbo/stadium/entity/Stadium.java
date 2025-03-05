@@ -19,7 +19,9 @@ public class Stadium {
 	private String name;
 
 	@Column(nullable = false)
-	private int capacity;
+	private int capacity; // 총 수용 인원
+
+	private int allocatedSeatCount = 0; // 할당된 누적 블록 좌석 수
 
 	protected Stadium() {
 
@@ -40,5 +42,16 @@ public class Stadium {
 
 	public int getCapacity() {
 		return capacity;
+	}
+
+	public int getAllocatedSeatCount() {
+		return allocatedSeatCount;
+	}
+
+	public void allocateSeatCount(int seatCount) {
+		if ((allocatedSeatCount + seatCount) > this.capacity) {
+			throw new IllegalStateException("Stadium total capacity exceeded.");
+		}
+		allocatedSeatCount += seatCount;
 	}
 }
