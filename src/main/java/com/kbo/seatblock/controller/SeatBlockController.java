@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kbo.seatblock.controller.request.SeatBlockRequest;
+import com.kbo.seatblock.controller.response.SeatBlockDetailResponse;
 import com.kbo.seatblock.controller.response.SeatBlockResponse;
 import com.kbo.seatblock.service.SeatBlockService;
 
@@ -32,8 +33,8 @@ public class SeatBlockController {
 	}
 
 	@PostMapping
-	public SeatBlockResponse save(@RequestBody SeatBlockRequest seatBlockRequest) {
-		return SeatBlockResponse.from(
+	public SeatBlockDetailResponse save(@RequestBody SeatBlockRequest seatBlockRequest) {
+		return SeatBlockDetailResponse.from(
 			seatBlockService.save(
 				seatBlockRequest.getName(),
 				seatBlockRequest.getSeatCount(),
