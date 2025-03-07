@@ -30,7 +30,7 @@ class SeatBlockServiceTest {
 	private SeatBlockService seatBlockService;
 
 	private static final String NAME = "307";
-	private static final int SEAT_COUNT = 1_000;
+	private static final long SEAT_COUNT = 1_000;
 	private static final long STADIUM_ID = 1L;
 	private static final Stadium STADIUM = StadiumFixture.get();
 

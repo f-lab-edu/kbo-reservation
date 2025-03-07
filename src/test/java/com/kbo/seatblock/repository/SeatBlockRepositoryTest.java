@@ -23,7 +23,7 @@ class SeatBlockRepositoryTest {
 	private SeatBlockRepository seatBlockRepository;
 
 	private static final String NAME = "307";
-	private static final int SEAT_COUNT = 1_000;
+	private static final long SEAT_COUNT = 1_000;
 
 	private Stadium stadium;
 

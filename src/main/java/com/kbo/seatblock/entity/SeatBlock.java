@@ -24,7 +24,7 @@ public class SeatBlock {
 	private String name;
 
 	@Column(nullable = false)
-	private int seatCount;
+	private Long seatCount;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "stadium_id")
@@ -34,7 +34,7 @@ public class SeatBlock {
 
 	}
 
-	public SeatBlock(String name, int seatCount, Stadium stadium) {
+	public SeatBlock(String name, Long seatCount, Stadium stadium) {
 		this.name = name;
 		this.seatCount = seatCount;
 		setStadium(stadium);
@@ -48,7 +48,7 @@ public class SeatBlock {
 		return name;
 	}
 
-	public int getSeatCount() {
+	public Long getSeatCount() {
 		return seatCount;
 	}
 

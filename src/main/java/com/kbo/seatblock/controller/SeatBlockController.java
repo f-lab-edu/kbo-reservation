@@ -36,9 +36,9 @@ public class SeatBlockController {
 	public SeatBlockDetailResponse save(@RequestBody SeatBlockRequest seatBlockRequest) {
 		return SeatBlockDetailResponse.from(
 			seatBlockService.save(
-				seatBlockRequest.getName(),
-				seatBlockRequest.getSeatCount(),
-				seatBlockRequest.getStadiumId()
+				seatBlockRequest.name(),
+				seatBlockRequest.seatCount(),
+				seatBlockRequest.stadiumId()
 			)
 		);
 	}

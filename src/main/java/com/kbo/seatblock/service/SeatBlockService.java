@@ -27,7 +27,7 @@ public class SeatBlockService {
 	}
 
 	@Transactional
-	public SeatBlock save(String name, int seatCount, long stadiumId) {
+	public SeatBlock save(String name, long seatCount, long stadiumId) {
 		validateInputs(name, seatCount);
 
 		if (seatBlockRepository.existsByName(name)) {
@@ -38,7 +38,7 @@ public class SeatBlockService {
 		return seatBlockRepository.save(new SeatBlock(name, seatCount, stadium));
 	}
 
-	private void validateInputs(String name, int seatCount) {
+	private void validateInputs(String name, long seatCount) {
 		if (!StringUtils.hasText(name)) {
 			throw new IllegalArgumentException("Invalid seat block name: " + name);
 		}
