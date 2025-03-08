@@ -3,8 +3,8 @@ package com.kbo.seatblock.controller.response;
 import com.kbo.seatblock.entity.SeatBlock;
 
 public record SeatBlockDetailResponse(
-	long id, String name, long seatCount,
-	String stadiumName, long stadiumTotalCapacity, long stadiumAllocatableSeatCount
+	long id, String name, int seatCount,
+	String stadiumName, int stadiumTotalCapacity, int stadiumAllocatableSeatCount
 ) {
 	public static SeatBlockDetailResponse from(SeatBlock seatBlock) {
 		return new SeatBlockDetailResponse(

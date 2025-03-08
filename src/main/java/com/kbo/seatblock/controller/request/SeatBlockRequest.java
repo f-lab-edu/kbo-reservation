@@ -1,6 +1,6 @@
 package com.kbo.seatblock.controller.request;
 
 public record SeatBlockRequest(
-	String name, long seatCount, long stadiumId
+	String name, int seatCount, long stadiumId
 ) {
 }
