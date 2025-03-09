@@ -3,8 +3,6 @@ package com.kbo.seatblock.service;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import java.util.List;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -33,17 +31,6 @@ class SeatBlockServiceTest {
 	private static final int SEAT_COUNT = 1_000;
 	private static final long STADIUM_ID = 1L;
 	private static final Stadium STADIUM = StadiumFixture.get();
-
-	@Test
-	void should_getSeatBlockList_when_valid() {
-		when(seatBlockRepository.findByStadiumId(anyLong())).thenReturn(List.of(
-			new SeatBlock(NAME, SEAT_COUNT, STADIUM),
-			new SeatBlock("308", SEAT_COUNT, STADIUM)));
-
-		List<SeatBlock> result = seatBlockService.getList(STADIUM_ID);
-
-		assertThat(result.size()).isEqualTo(2);
-	}
 
 	@Test
 	void should_throwException_when_invalidInput() {

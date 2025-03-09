@@ -1,7 +1,5 @@
 package com.kbo.seatblock.service;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -20,10 +18,6 @@ public class SeatBlockService {
 	public SeatBlockService(SeatBlockRepository seatBlockRepository, StadiumService stadiumService) {
 		this.seatBlockRepository = seatBlockRepository;
 		this.stadiumService = stadiumService;
-	}
-
-	public List<SeatBlock> getList(long stadiumId) {
-		return seatBlockRepository.findByStadiumId(stadiumId);
 	}
 
 	@Transactional

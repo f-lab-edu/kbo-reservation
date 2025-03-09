@@ -58,6 +58,7 @@ public class SeatBlock {
 
 	private void setStadium(Stadium stadium) {
 		this.stadium = stadium;
+		stadium.getSeatBlocks().add(this);
 		stadium.allocateSeatCount(seatCount);
 	}
 }
