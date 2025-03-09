@@ -20,6 +20,6 @@ public class StadiumController {
 
 	@PostMapping
 	public StadiumResponse save(@RequestBody StadiumRequest stadiumRequest) {
-		return StadiumResponse.from(stadiumService.save(stadiumRequest.getName(), stadiumRequest.getCapacity()));
+		return StadiumResponse.from(stadiumService.save(stadiumRequest.name(), stadiumRequest.capacity()));
 	}
 }
