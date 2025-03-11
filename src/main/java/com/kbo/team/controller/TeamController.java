@@ -20,6 +20,6 @@ public class TeamController {
 
 	@PostMapping
 	public TeamResponse save(@RequestBody TeamRequest teamRequest) {
-		return TeamResponse.from(teamService.save(teamRequest.getName(), teamRequest.getStadiumId()));
+		return TeamResponse.from(teamService.save(teamRequest.name(), teamRequest.stadiumId()));
 	}
 }
