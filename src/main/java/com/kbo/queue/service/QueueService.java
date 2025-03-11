@@ -8,6 +8,8 @@ import com.kbo.queue.repository.QueueTtlRepository;
 
 @Service
 public class QueueService {
+	private static final long QUEUE_TTL_TIME_SECONDS = 30;
+
 	private final QueueRepository queueRepository;
 	private final QueueTtlRepository queueTtlRepository;
 
@@ -22,7 +24,7 @@ public class QueueService {
 		}
 
 		queueRepository.add(gameId, userId);
-		queueTtlRepository.setExpire(gameId, userId, 30);
+		queueTtlRepository.setExpire(gameId, userId, QUEUE_TTL_TIME_SECONDS);
 		return getPosition(gameId, userId);
 	}
 
