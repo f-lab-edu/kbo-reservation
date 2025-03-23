@@ -28,9 +28,6 @@ public class SseEventListener implements MessageListener {
 	public void onMessage(@NonNull Message message, byte[] pattern) {
 		String payload = new String(message.getBody());
 		try {
-			if (payload.startsWith("\"") && payload.endsWith("\"")) {
-				payload = objectMapper.readValue(payload, String.class);
-			}
 			SseEvent sseEvent = objectMapper.readValue(payload, SseEvent.class);
 			sseService.send(sseEvent.gameId());
 		} catch (JsonProcessingException e) {

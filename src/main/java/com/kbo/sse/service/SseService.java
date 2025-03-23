@@ -33,13 +33,8 @@ public class SseService {
 
 		sseEmitter.onCompletion(() -> remove(gameId, userId));
 		sseEmitter.onTimeout(() -> {
-			try {
-				sseEmitter.send(SseEmitter.event().name("timeout").data("Connection timed out."));
-			} catch (IOException e) {
-				log.error("SseEmitter event error gameId: {}", gameId, e);
-			} finally {
-				remove(gameId, userId);
-			}
+			log.debug("SSE connection timed out. gameId: {}, userId: {}", gameId, userId);
+			remove(gameId, userId);
 		});
 
 		return sseEmitter;

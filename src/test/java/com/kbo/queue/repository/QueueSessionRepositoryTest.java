@@ -16,6 +16,7 @@ class QueueSessionRepositoryTest {
 
 	private static final long GAME_ID = 1001L;
 	private static final long USER_ID = 2001L;
+	private static final long SESSION_TTL_SECONDS = 5;
 	private QueueSession queueSession;
 
 	@BeforeEach
@@ -26,7 +27,7 @@ class QueueSessionRepositoryTest {
 
 	@Test
 	void should_saveSession_when_user() {
-		queueSessionRepository.saveSession(queueSession);
+		queueSessionRepository.saveSession(queueSession, SESSION_TTL_SECONDS);
 
 		QueueSession session = queueSessionRepository.getSession(queueSession.token());
 
@@ -38,13 +39,13 @@ class QueueSessionRepositoryTest {
 
 	@Test
 	void should_isSessionExpired_when_success() throws InterruptedException {
-		queueSessionRepository.saveSession(queueSession);
+		queueSessionRepository.saveSession(queueSession, SESSION_TTL_SECONDS);
 
 		Thread.sleep(2000);
 		boolean expiredBeforeTTL = queueSessionRepository.isSessionExpired(queueSession.token());
 		assertThat(expiredBeforeTTL).isFalse();
 
-		Thread.sleep(29000);
+		Thread.sleep(4000);
 		boolean expiredAfterTTL = queueSessionRepository.isSessionExpired(queueSession.token());
 		assertThat(expiredAfterTTL).isTrue();
 	}

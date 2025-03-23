@@ -11,17 +11,15 @@ import com.kbo.queue.controller.response.QueueSession;
 
 @Repository
 public class QueueSessionRepository {
-	private static final long SESSION_TTL_SECONDS = 30;
-
 	private final RedisTemplate<String, Object> redisTemplate;
 
 	public QueueSessionRepository(RedisTemplate<String, Object> redisTemplate) {
 		this.redisTemplate = redisTemplate;
 	}
 
-	public void saveSession(QueueSession queueSession) {
+	public void saveSession(QueueSession queueSession, long timeout) {
 		String key = formatKey(queueSession.token());
-		redisTemplate.opsForValue().set(key, queueSession, SESSION_TTL_SECONDS, TimeUnit.SECONDS);
+		redisTemplate.opsForValue().set(key, queueSession, timeout, TimeUnit.SECONDS);
 	}
 
 	public QueueSession getSession(String token) {

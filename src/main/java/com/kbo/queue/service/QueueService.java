@@ -10,6 +10,8 @@ import com.kbo.sse.publisher.SseEventPublisher;
 
 @Service
 public class QueueService {
+	private static final long SESSION_TTL_SECONDS = 30;
+
 	private final QueueRepository queueRepository;
 	private final QueueSessionRepository queueSessionRepository;
 	private SseEventPublisher sseEventPublisher;
@@ -32,7 +34,7 @@ public class QueueService {
 		queueRepository.add(gameId, userId);
 
 		QueueSession queueSession = QueueSession.create(gameId, userId);
-		queueSessionRepository.saveSession(queueSession);
+		queueSessionRepository.saveSession(queueSession, SESSION_TTL_SECONDS);
 
 		sseEventPublisher.publish(gameId);
 

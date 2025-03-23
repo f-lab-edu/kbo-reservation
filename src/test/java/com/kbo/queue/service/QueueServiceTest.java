@@ -35,7 +35,7 @@ class QueueServiceTest {
 	void should_join_when_user() {
 		when(queueRepository.score(GAME_ID, USER_ID)).thenReturn(null);
 
-		doNothing().when(queueSessionRepository).saveSession(any(QueueSession.class));
+		doNothing().when(queueSessionRepository).saveSession(any(QueueSession.class), anyLong());
 
 		QueueSession result = queueService.join(GAME_ID, USER_ID);
 
@@ -45,7 +45,7 @@ class QueueServiceTest {
 		assertThat(result.userId()).isEqualTo(USER_ID);
 
 		verify(queueRepository, times(1)).add(GAME_ID, USER_ID);
-		verify(queueSessionRepository, times(1)).saveSession(any(QueueSession.class));
+		verify(queueSessionRepository, times(1)).saveSession(any(QueueSession.class), anyLong());
 		verify(sseEventPublisher, times(1)).publish(GAME_ID);
 	}
 
@@ -53,7 +53,7 @@ class QueueServiceTest {
 	void should_join_when_existsUser() {
 		when(queueRepository.score(GAME_ID, USER_ID)).thenReturn(1.1);
 
-		doNothing().when(queueSessionRepository).saveSession(any(QueueSession.class));
+		doNothing().when(queueSessionRepository).saveSession(any(QueueSession.class), anyLong());
 
 		QueueSession result = queueService.join(GAME_ID, USER_ID);
 
@@ -64,7 +64,7 @@ class QueueServiceTest {
 
 		verify(queueRepository, times(1)).remove(GAME_ID, USER_ID);
 		verify(queueRepository, times(1)).add(GAME_ID, USER_ID);
-		verify(queueSessionRepository, times(1)).saveSession(any(QueueSession.class));
+		verify(queueSessionRepository, times(1)).saveSession(any(QueueSession.class), anyLong());
 		verify(sseEventPublisher, times(1)).publish(GAME_ID);
 	}
 }
