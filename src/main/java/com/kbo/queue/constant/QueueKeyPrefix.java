@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public enum QueueKeyPrefix {
 	QUEUE("queue:"),
-	TTL("queue:ttl:");
+	SESSION("queue:session:");
 
 	private final String prefix;
 

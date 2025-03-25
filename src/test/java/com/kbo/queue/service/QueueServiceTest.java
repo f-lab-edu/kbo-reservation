@@ -9,9 +9,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.kbo.queue.controller.response.QueueResponse;
+import com.kbo.queue.controller.response.QueueSession;
 import com.kbo.queue.repository.QueueRepository;
-import com.kbo.queue.repository.QueueTtlRepository;
+import com.kbo.queue.repository.QueueSessionRepository;
+import com.kbo.sse.publisher.SseEventPublisher;
 
 @ExtendWith(MockitoExtension.class)
 class QueueServiceTest {
@@ -19,45 +20,51 @@ class QueueServiceTest {
 	private QueueRepository queueRepository;
 
 	@Mock
-	private QueueTtlRepository queueTtlRepository;
+	private QueueSessionRepository queueSessionRepository;
+
+	@Mock
+	private SseEventPublisher sseEventPublisher;
 
 	@InjectMocks
 	private QueueService queueService;
 
 	private static final long GAME_ID = 1001L;
 	private static final long USER_ID = 2001L;
-	private static final long RANK = 0L;
-	private static final long SIZE = 1L;
 
 	@Test
 	void should_join_when_user() {
-		when(queueRepository.rank(GAME_ID, USER_ID)).thenReturn(RANK);
-		when(queueRepository.size(GAME_ID)).thenReturn(SIZE);
+		when(queueRepository.score(GAME_ID, USER_ID)).thenReturn(null);
 
-		QueueResponse result = queueService.join(GAME_ID, USER_ID);
+		doNothing().when(queueSessionRepository).saveSession(any(QueueSession.class), anyLong());
+
+		QueueSession result = queueService.join(GAME_ID, USER_ID);
 
 		assertThat(result).isNotNull();
-		assertThat(result.currentRank()).isEqualTo(1L);
-		assertThat(result.queueSize()).isEqualTo(SIZE);
+		assertThat(result.token()).isNotBlank();
+		assertThat(result.gameId()).isEqualTo(GAME_ID);
+		assertThat(result.userId()).isEqualTo(USER_ID);
 
 		verify(queueRepository, times(1)).add(GAME_ID, USER_ID);
-		verify(queueTtlRepository, times(1)).setExpire(GAME_ID, USER_ID, 30);
+		verify(queueSessionRepository, times(1)).saveSession(any(QueueSession.class), anyLong());
+		verify(sseEventPublisher, times(1)).publish(GAME_ID);
 	}
 
 	@Test
 	void should_join_when_existsUser() {
 		when(queueRepository.score(GAME_ID, USER_ID)).thenReturn(1.1);
-		when(queueRepository.rank(GAME_ID, USER_ID)).thenReturn(RANK);
-		when(queueRepository.size(GAME_ID)).thenReturn(SIZE);
 
-		QueueResponse result = queueService.join(GAME_ID, USER_ID);
+		doNothing().when(queueSessionRepository).saveSession(any(QueueSession.class), anyLong());
+
+		QueueSession result = queueService.join(GAME_ID, USER_ID);
 
 		assertThat(result).isNotNull();
-		assertThat(result.currentRank()).isEqualTo(1L);
-		assertThat(result.queueSize()).isEqualTo(SIZE);
+		assertThat(result.token()).isNotBlank();
+		assertThat(result.gameId()).isEqualTo(GAME_ID);
+		assertThat(result.userId()).isEqualTo(USER_ID);
 
 		verify(queueRepository, times(1)).remove(GAME_ID, USER_ID);
 		verify(queueRepository, times(1)).add(GAME_ID, USER_ID);
-		verify(queueTtlRepository, times(1)).setExpire(GAME_ID, USER_ID, 30);
+		verify(queueSessionRepository, times(1)).saveSession(any(QueueSession.class), anyLong());
+		verify(sseEventPublisher, times(1)).publish(GAME_ID);
 	}
 }

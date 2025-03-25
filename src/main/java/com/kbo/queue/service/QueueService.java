@@ -3,29 +3,42 @@ package com.kbo.queue.service;
 import org.springframework.stereotype.Service;
 
 import com.kbo.queue.controller.response.QueueResponse;
+import com.kbo.queue.controller.response.QueueSession;
 import com.kbo.queue.repository.QueueRepository;
-import com.kbo.queue.repository.QueueTtlRepository;
+import com.kbo.queue.repository.QueueSessionRepository;
+import com.kbo.sse.publisher.SseEventPublisher;
 
 @Service
 public class QueueService {
-	private static final long QUEUE_TTL_TIME_SECONDS = 30;
+	private static final long SESSION_TTL_SECONDS = 30;
 
 	private final QueueRepository queueRepository;
-	private final QueueTtlRepository queueTtlRepository;
+	private final QueueSessionRepository queueSessionRepository;
+	private SseEventPublisher sseEventPublisher;
 
-	public QueueService(QueueRepository queueRepository, QueueTtlRepository queueTtlRepository) {
+	public QueueService(
+		QueueRepository queueRepository,
+		QueueSessionRepository queueSessionRepository,
+		SseEventPublisher sseEventPublisher
+	) {
 		this.queueRepository = queueRepository;
-		this.queueTtlRepository = queueTtlRepository;
+		this.queueSessionRepository = queueSessionRepository;
+		this.sseEventPublisher = sseEventPublisher;
 	}
 
-	public QueueResponse join(long gameId, long userId) {
+	public QueueSession join(long gameId, long userId) {
 		if (queueRepository.score(gameId, userId) != null) {
 			queueRepository.remove(gameId, userId);
 		}
 
 		queueRepository.add(gameId, userId);
-		queueTtlRepository.setExpire(gameId, userId, QUEUE_TTL_TIME_SECONDS);
-		return getPosition(gameId, userId);
+
+		QueueSession queueSession = QueueSession.create(gameId, userId);
+		queueSessionRepository.saveSession(queueSession, SESSION_TTL_SECONDS);
+
+		sseEventPublisher.publish(gameId);
+
+		return queueSession;
 	}
 
 	public QueueResponse getPosition(long gameId, long userId) {
@@ -36,5 +49,9 @@ public class QueueService {
 
 		long totalQueueSize = queueRepository.size(gameId);
 		return new QueueResponse(rank + 1, totalQueueSize, false);
+	}
+
+	public QueueSession getSession(String token) {
+		return queueSessionRepository.getSession(token);
 	}
 }
