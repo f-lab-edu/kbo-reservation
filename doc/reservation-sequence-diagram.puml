@@ -1,0 +1,35 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+actor 사용자
+participant "SeatService" as seatService
+participant "paymentService" as paymentService
+participant "Kafka" as kafka
+participant "ReservationService" as reservationService
+
+사용자 -> seatService : 좌석 블록 선택 및 좌석 조회
+seatService --> 사용자 : 좌석 목록
+
+사용자 -> seatService : 좌석 선택 및 임시 예약 요청
+
+alt 좌석 이미 예약됨
+    seatService --> 사용자 : 예약 불가 응답
+else 예약 가능
+    seatService --> 사용자 : 임시 예약 성공
+
+    사용자 -> paymentService : 결제 요청
+    paymentService --> kafka : 예매 확정 이벤트 발행
+
+    note right of kafka
+    Kafka는 예매 확정 이벤트를 발행함.
+    ReservationService가 이를 consume하여 처리함.
+    end note
+
+    reservationService <- kafka : 예매 확정 이벤트 수신
+    reservationService -> seatService : 좌석 확정 및 임시 자원 정리
+    reservationService --> 사용자 : 예약 완료 알림 전송
+
+    ' 입장 가능자 발생 이벤트 발행
+    reservationService -> kafka : 입장 가능 이벤트 발행
+end
+@enduml
