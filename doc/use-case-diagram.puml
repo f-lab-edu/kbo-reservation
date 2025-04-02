@@ -1,0 +1,43 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+
+left to right direction
+actor 사용자 as user
+
+usecase "경기를 선택한다" as UC1
+usecase "대기열에 진입한다" as UC1a
+usecase "대기열 상태를 확인한다" as UC1b
+
+usecase "좌석 블록을 선택한다" as UC2
+usecase "좌석을 조회한다" as UC2a
+
+usecase "좌석을 선택한다" as UC3
+usecase "좌석을 예약한다" as UC4
+
+usecase "결제를 진행한다" as UC5
+usecase "예약을 확정한다" as UC5a
+
+usecase "예약을 취소한다" as UC6
+usecase "환불을 진행한다" as UC6a
+
+usecase "예약 내역을 확인한다" as UC7
+
+user --> UC1
+UC1 ..> UC1a : <<include>>
+UC1a ..> UC1b : <<include>>
+
+user --> UC2
+UC2 ..> UC2a : <<include>>
+
+user --> UC3
+user --> UC4
+
+user --> UC5
+UC5 ..> UC5a : <<include>>
+
+user --> UC6
+UC6 ..> UC6a : <<include>>
+
+user --> UC7
+
+@enduml
