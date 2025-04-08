@@ -1,5 +1,7 @@
 package com.kbo.queue.listener;
 
+import static com.kbo.util.ValidatorUtil.*;
+
 import java.nio.charset.StandardCharsets;
 
 import org.slf4j.Logger;
@@ -36,7 +38,7 @@ public class QueueSessionExpiredListener extends KeyExpirationEventMessageListen
 			return;
 		}
 
-		if (expiredKey.length() <= SESSION_PREFIX.length()) {
+		if (expiredKey.length() != SESSION_PREFIX.length()) {
 			log.error("Session key has no token: {}", expiredKey);
 			return;
 		}
@@ -67,7 +69,7 @@ public class QueueSessionExpiredListener extends KeyExpirationEventMessageListen
 		String userIdString = parts[2];
 		String nanoTimeString = parts[3];
 
-		if (randomString.length() != 8 || !randomString.matches("^[A-Za-z0-9]+$")) {
+		if (!isAlphanumeric8(randomString)) {
 			return false;
 		}
 
