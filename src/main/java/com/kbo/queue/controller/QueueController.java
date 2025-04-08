@@ -1,5 +1,7 @@
 package com.kbo.queue.controller;
 
+import static com.kbo.queue.constant.SessionKey.*;
+
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +35,6 @@ public class QueueController {
 
 	@GetMapping(value = "/subscribe", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	public SseEmitter subscribe(HttpServletRequest request) {
-		return sseService.add((String)request.getAttribute("sessionToken"));
+		return sseService.add((String)request.getAttribute(SESSION_TOKEN_ATTRIBUTE.getKey()));
 	}
 }

@@ -1,5 +1,7 @@
 package com.kbo.config.interceptor;
 
+import static com.kbo.queue.constant.SessionKey.*;
+
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -23,7 +25,7 @@ public class QueueSessionInterceptor implements HandlerInterceptor {
 		HttpServletResponse response,
 		Object handler
 	) throws Exception {
-		String sessionToken = request.getHeader("X-Session-Token");
+		String sessionToken = request.getHeader(SESSION_TOKEN_HEADER.getKey());
 
 		if (sessionToken == null || sessionToken.isEmpty()) {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -38,7 +40,7 @@ public class QueueSessionInterceptor implements HandlerInterceptor {
 			return false;
 		}
 
-		request.setAttribute("sessionToken", sessionToken);
+		request.setAttribute(SESSION_TOKEN_ATTRIBUTE.getKey(), sessionToken);
 
 		return true;
 	}

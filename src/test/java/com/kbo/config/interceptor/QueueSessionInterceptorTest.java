@@ -1,5 +1,6 @@
 package com.kbo.config.interceptor;
 
+import static com.kbo.queue.constant.SessionKey.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -25,7 +26,7 @@ class QueueSessionInterceptorTest {
 	private MockHttpServletRequest request;
 	private MockHttpServletResponse response;
 
-	private static final String SESSION_TOKEN = "session-token";
+	private static final String TEST_SESSION_TOKEN = "session-token";
 
 	@BeforeEach
 	void setUp() {
@@ -45,8 +46,8 @@ class QueueSessionInterceptorTest {
 
 	@Test
 	void should_token_when_invalid() throws Exception {
-		request.addHeader("X-Session-Token", SESSION_TOKEN);
-		when(queueSessionRepository.getSession(SESSION_TOKEN)).thenReturn(null);
+		request.addHeader(SESSION_TOKEN_HEADER.getKey(), TEST_SESSION_TOKEN);
+		when(queueSessionRepository.getSession(TEST_SESSION_TOKEN)).thenReturn(null);
 
 		boolean result = queueSessionInterceptor.preHandle(request, response, new Object());
 
@@ -57,12 +58,13 @@ class QueueSessionInterceptorTest {
 
 	@Test
 	void should_token_when_valid() throws Exception {
-		request.addHeader("X-Session-Token", SESSION_TOKEN);
-		when(queueSessionRepository.getSession(SESSION_TOKEN)).thenReturn(QueueSessionFixture.get(SESSION_TOKEN));
+		request.addHeader(SESSION_TOKEN_HEADER.getKey(), TEST_SESSION_TOKEN);
+		when(queueSessionRepository.getSession(TEST_SESSION_TOKEN)).thenReturn(QueueSessionFixture.get(
+			TEST_SESSION_TOKEN));
 
 		boolean result = queueSessionInterceptor.preHandle(request, response, new Object());
 
 		assertThat(result).isTrue();
-		assertThat(request.getAttribute("sessionToken")).isEqualTo(SESSION_TOKEN);
+		assertThat(request.getAttribute(SESSION_TOKEN_ATTRIBUTE.getKey())).isEqualTo(TEST_SESSION_TOKEN);
 	}
 }
