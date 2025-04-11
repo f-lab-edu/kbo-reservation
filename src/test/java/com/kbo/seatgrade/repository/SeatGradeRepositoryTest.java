@@ -33,14 +33,14 @@ class SeatGradeRepositoryTest {
 	}
 
 	@Test
-	void should_throwException_when_invalidId() {
+	void 존재하지_않는_좌석_등급_ID로_조회시_빈값_반환() {
 		Optional<SeatGrade> result = seatGradeRepository.findById(-1L);
 
 		assertThat(result).isEmpty();
 	}
 
 	@Test
-	void should_save_when_valid() {
+	void 좌석_등급_저장_성공() {
 		SeatGrade seatGrade = SeatGradeFixture.get(stadium);
 		seatGradeRepository.save(seatGrade);
 

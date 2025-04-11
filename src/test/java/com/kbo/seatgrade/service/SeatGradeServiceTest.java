@@ -32,7 +32,7 @@ class SeatGradeServiceTest {
 	private SeatGradeService seatGradeService;
 
 	@Test
-	void should_throwException_when_invalidStadium() {
+	void 존재하지_않는_경기장_ID로_저장시_예외발생() {
 		Long invalidStadiumId = 999L;
 		when(stadiumService.getStadium(invalidStadiumId))
 			.thenThrow(new CustomNotExistsException("Not exists id: " + invalidStadiumId));
@@ -44,7 +44,7 @@ class SeatGradeServiceTest {
 	}
 
 	@Test
-	void should_throwException_when_invalidSeatId() {
+	void 존재하지_않는_좌석_등급_ID로_조회시_예외발생() {
 		Long invalidSeatId = 100L;
 		when(seatGradeRepository.findById(invalidSeatId)).thenReturn(Optional.empty());
 
@@ -54,7 +54,7 @@ class SeatGradeServiceTest {
 	}
 
 	@Test
-	void should_save_when_valid() {
+	void 좌석_등급_저장_성공() {
 		Long stadiumId = 100L;
 		Stadium stadium = StadiumFixture.get();
 		SeatGrade seatGrade = SeatGradeFixture.get(stadium);
@@ -71,7 +71,7 @@ class SeatGradeServiceTest {
 	}
 
 	@Test
-	void should_getSeatGrade_when_valid() {
+	void 좌석_등급_단건_조회_성공() {
 		Long id = 1L;
 		SeatGrade seatGrade = SeatGradeFixture.get(mock(Stadium.class));
 		when(seatGradeRepository.findById(id)).thenReturn(Optional.of(seatGrade));
