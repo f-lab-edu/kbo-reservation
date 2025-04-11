@@ -24,7 +24,8 @@ public class SeatBlockController {
 			seatBlockService.save(
 				seatBlockRequest.name(),
 				seatBlockRequest.seatCount(),
-				seatBlockRequest.stadiumId()
+				seatBlockRequest.stadiumId(),
+				seatBlockRequest.seatGradeId()
 			)
 		);
 	}

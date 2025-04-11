@@ -1,6 +1,8 @@
-package com.kbo.seatblock.repository;
+package com.kbo.seatgrade.repository;
 
 import static org.assertj.core.api.Assertions.*;
+
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,44 +10,43 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kbo.fixture.SeatBlockFixture;
 import com.kbo.fixture.SeatGradeFixture;
 import com.kbo.fixture.StadiumFixture;
 import com.kbo.seatgrade.entity.SeatGrade;
-import com.kbo.seatgrade.repository.SeatGradeRepository;
 import com.kbo.stadium.entity.Stadium;
 import com.kbo.stadium.repository.StadiumRepository;
 
 @SpringBootTest
 @Transactional
-class SeatBlockRepositoryTest {
-	@Autowired
-	private StadiumRepository stadiumRepository;
-
-	@Autowired
-	private SeatBlockRepository seatBlockRepository;
-
+class SeatGradeRepositoryTest {
 	@Autowired
 	private SeatGradeRepository seatGradeRepository;
 
-	private static final String NAME = "307";
-	private static final int SEAT_COUNT = 1_000;
+	@Autowired
+	private StadiumRepository stadiumRepository;
 
 	private Stadium stadium;
-	private SeatGrade seatGrade;
 
 	@BeforeEach
 	void setUp() {
 		stadium = stadiumRepository.save(StadiumFixture.get());
-		seatGrade = seatGradeRepository.save(SeatGradeFixture.get(stadium));
 	}
 
 	@Test
-	void should_findSeatBlock_when_validName() {
-		seatBlockRepository.save(SeatBlockFixture.get(NAME, SEAT_COUNT, stadium, seatGrade));
+	void should_throwException_when_invalidId() {
+		Optional<SeatGrade> result = seatGradeRepository.findById(-1L);
 
-		boolean result = seatBlockRepository.existsByName(NAME);
+		assertThat(result).isEmpty();
+	}
 
-		assertThat(result).isTrue();
+	@Test
+	void should_save_when_valid() {
+		SeatGrade seatGrade = SeatGradeFixture.get(stadium);
+		seatGradeRepository.save(seatGrade);
+
+		Optional<SeatGrade> result = seatGradeRepository.findById(seatGrade.getId());
+
+		assertThat(result).isPresent();
+		assertThat(result.get().getName()).isEqualTo(seatGrade.getName());
 	}
 }
