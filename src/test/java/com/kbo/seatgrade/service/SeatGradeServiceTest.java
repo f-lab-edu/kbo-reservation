@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.kbo.exception.CustomAlreadyExistsException;
 import com.kbo.exception.CustomNotExistsException;
 import com.kbo.fixture.SeatGradeFixture;
 import com.kbo.fixture.StadiumFixture;
@@ -31,14 +32,20 @@ class SeatGradeServiceTest {
 	@InjectMocks
 	private SeatGradeService seatGradeService;
 
+	private static final String NAME = "익사이팅존";
+	private static final SeatSide SEAT_SIDE = SeatSide.FIRST_BASE;
+	private static final int PRICE = 28_000;
+	private static final Long STADIUM_ID = 1001L;
+
 	@Test
 	void 존재하지_않는_경기장_ID로_저장시_예외발생() {
 		Long invalidStadiumId = 999L;
+
 		when(stadiumService.getStadium(invalidStadiumId))
 			.thenThrow(new CustomNotExistsException("Not exists id: " + invalidStadiumId));
 
 		assertThatThrownBy(() ->
-			seatGradeService.save("블루석", SeatSide.FIRST_BASE, 22_000, invalidStadiumId))
+			seatGradeService.save(NAME, SEAT_SIDE, PRICE, invalidStadiumId))
 			.isInstanceOf(CustomNotExistsException.class)
 			.hasMessage("Not exists id: " + invalidStadiumId);
 	}
@@ -54,15 +61,48 @@ class SeatGradeServiceTest {
 	}
 
 	@Test
+	void 좌석_등급_저장시_유효하지_않은_이름이면_예외발생() {
+		assertThatThrownBy(() -> seatGradeService.save("    ", SEAT_SIDE, PRICE, STADIUM_ID))
+			.isInstanceOf(IllegalArgumentException.class)
+			.hasMessageContaining("Invalid SeatGrade name");
+	}
+
+	@Test
+	void 좌석_등급_저장시_좌석방향_null이면_예외발생() {
+		assertThatThrownBy(() -> seatGradeService.save(NAME, null, PRICE, STADIUM_ID))
+			.isInstanceOf(IllegalArgumentException.class)
+			.hasMessage("Invalid SeatGrade seatSide.");
+	}
+
+	@Test
+	void 좌석_등급_저장시_가격이_0이하이면_예외발생() {
+		assertThatThrownBy(() -> seatGradeService.save(NAME, SEAT_SIDE, 0, STADIUM_ID))
+			.isInstanceOf(IllegalArgumentException.class)
+			.hasMessageContaining("Invalid SeatGrade price");
+	}
+
+	@Test
+	void 동일한_이름과_좌석방향_경기장이_이미_존재하면_예외발생() {
+		Stadium stadium = StadiumFixture.get();
+
+		when(stadiumService.getStadium(STADIUM_ID)).thenReturn(stadium);
+		when(seatGradeRepository.existsByNameAndSeatSideAndStadium(NAME, SEAT_SIDE, stadium))
+			.thenReturn(true);
+
+		assertThatThrownBy(() -> seatGradeService.save(NAME, SEAT_SIDE, PRICE, STADIUM_ID))
+			.isInstanceOf(CustomAlreadyExistsException.class)
+			.hasMessageContaining("Already exists name");
+	}
+
+	@Test
 	void 좌석_등급_저장_성공() {
-		Long stadiumId = 100L;
 		Stadium stadium = StadiumFixture.get();
 		SeatGrade seatGrade = SeatGradeFixture.get(stadium);
 
-		when(stadiumService.getStadium(stadiumId)).thenReturn(stadium);
+		when(stadiumService.getStadium(STADIUM_ID)).thenReturn(stadium);
 		when(seatGradeRepository.save(any())).thenReturn(seatGrade);
 
-		SeatGrade result = seatGradeService.save("익사이팅존", SeatSide.FIRST_BASE, 28_000, stadiumId);
+		SeatGrade result = seatGradeService.save(NAME, SEAT_SIDE, PRICE, STADIUM_ID);
 
 		assertThat(result.getName()).isEqualTo(seatGrade.getName());
 		assertThat(result.getSeatSide()).isEqualTo(seatGrade.getSeatSide());

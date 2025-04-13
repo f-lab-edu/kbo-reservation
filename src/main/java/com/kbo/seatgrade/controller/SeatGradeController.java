@@ -12,7 +12,7 @@ import com.kbo.seatgrade.controller.response.SeatGradeResponse;
 import com.kbo.seatgrade.service.SeatGradeService;
 
 @RestController
-@RequestMapping("/seatGrades")
+@RequestMapping("/seat-grades")
 public class SeatGradeController {
 	private final SeatGradeService seatGradeService;
 
