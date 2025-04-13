@@ -1,8 +1,9 @@
 package com.kbo.queue.controller;
 
+import static com.kbo.queue.constant.SessionKey.*;
+
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,8 @@ import com.kbo.queue.controller.request.QueueRequest;
 import com.kbo.queue.controller.response.QueueSession;
 import com.kbo.queue.service.QueueService;
 import com.kbo.sse.service.SseService;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/queue")
@@ -30,8 +33,8 @@ public class QueueController {
 		return queueService.join(queueRequest.gameId(), queueRequest.userId());
 	}
 
-	@GetMapping(value = "/subscribe/{sessionToken}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-	public SseEmitter subscribe(@PathVariable("sessionToken") String sessionToken) {
-		return sseService.add(sessionToken);
+	@GetMapping(value = "/subscribe", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	public SseEmitter subscribe(HttpServletRequest request) {
+		return sseService.add((String)request.getAttribute(SESSION_TOKEN_ATTRIBUTE.getKey()));
 	}
 }
