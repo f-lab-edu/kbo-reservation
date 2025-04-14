@@ -33,7 +33,7 @@ class SseServiceTest {
 	private static final String SESSION_TOKEN = "6f9a2b88-3a4c-41d1-99a5-8a720b1c9183";
 
 	@Test
-	void should_add_when_valid() {
+	void 유효한_세션_토큰일_경우_구독_추가_성공() {
 		QueueSession queueSession = QueueSession.create(GAME_ID, USER_ID);
 		when(queueService.getSession(SESSION_TOKEN)).thenReturn(queueSession);
 
@@ -44,7 +44,7 @@ class SseServiceTest {
 	}
 
 	@Test
-	void should_send_when_valid() throws IOException {
+	void 유효한_게임ID일_경우_대기열_정보_전송_성공() throws IOException {
 		SseEmitter emitter = mock(SseEmitter.class);
 		when(subscriptionManager.getSubscribers(GAME_ID)).thenReturn(Map.of(USER_ID, emitter));
 		when(queueService.getPosition(GAME_ID, USER_ID)).thenReturn(new QueueResponse(1, 10, false));
@@ -55,7 +55,7 @@ class SseServiceTest {
 	}
 
 	@Test
-	void should_remove_when_valid() throws IOException {
+	void 전송중_예외가_발생할_경우_구독_제거_성공() throws IOException {
 		SseEmitter emitter = mock(SseEmitter.class);
 		when(subscriptionManager.getSubscribers(GAME_ID)).thenReturn(Map.of(USER_ID, emitter));
 		doThrow(IOException.class).when(emitter).send(nullable(Object.class));

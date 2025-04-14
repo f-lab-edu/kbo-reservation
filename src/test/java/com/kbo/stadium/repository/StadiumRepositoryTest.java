@@ -19,7 +19,7 @@ class StadiumRepositoryTest {
 	private static final int CAPACITY = 25_000;
 
 	@Test
-	void could_findStadium_when_validName() {
+	void 경기장_존재_확인_성공() {
 		stadiumRepository.save(new Stadium(NAME, CAPACITY));
 
 		boolean result = stadiumRepository.existsByName(NAME);
@@ -28,7 +28,7 @@ class StadiumRepositoryTest {
 	}
 
 	@Test
-	void should_saveStadium_when_validInput() {
+	void 경기장_저장_성공() {
 		Stadium stadium = new Stadium(NAME, CAPACITY);
 
 		Stadium result = stadiumRepository.save(stadium);

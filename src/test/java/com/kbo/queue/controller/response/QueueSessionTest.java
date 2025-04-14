@@ -13,7 +13,7 @@ class QueueSessionTest {
 	private static final long USER_ID = 2001L;
 
 	@Test
-	void should_create_when_valid() {
+	void 대기열_토큰_생성_성공() {
 		QueueSession queueSession = QueueSession.create(GAME_ID, USER_ID);
 
 		log.info("queueSession token: {}", queueSession.token());
