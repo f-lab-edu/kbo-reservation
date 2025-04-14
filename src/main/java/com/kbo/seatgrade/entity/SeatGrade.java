@@ -27,7 +27,7 @@ public class SeatGrade {
 	private String name;
 
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false, length = 10)
+	@Column(nullable = false, length = 10, columnDefinition = "varchar(10)")
 	private SeatSide seatSide;
 
 	@Column(nullable = false)
