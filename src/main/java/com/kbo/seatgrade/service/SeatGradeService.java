@@ -1,5 +1,6 @@
 package com.kbo.seatgrade.service;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -34,11 +35,11 @@ public class SeatGradeService {
 
 		Stadium stadium = stadiumService.getStadium(stadiumId);
 
-		if (seatGradeRepository.existsByNameAndSeatSideAndStadium(name, seatSide, stadium)) {
+		try {
+			return seatGradeRepository.save(new SeatGrade(name, seatSide, price, stadium));
+		} catch (DataIntegrityViolationException e) {
 			throw new CustomAlreadyExistsException("Already exists name: " + name + ", seatSide: " + seatSide);
 		}
-
-		return seatGradeRepository.save(new SeatGrade(name, seatSide, price, stadium));
 	}
 
 	private void validateInputs(String name, SeatSide seatSide, int price) {

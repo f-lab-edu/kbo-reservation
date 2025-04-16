@@ -23,14 +23,11 @@ public class SeatGrade {
 	@Column(name = "seat_grade_id")
 	private Long id;
 
-	@Column(nullable = false, length = 20)
 	private String name;
 
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false, length = 10, columnDefinition = "varchar(10)")
 	private SeatSide seatSide;
 
-	@Column(nullable = false)
 	private int price;
 
 	@ManyToOne(fetch = FetchType.LAZY)
