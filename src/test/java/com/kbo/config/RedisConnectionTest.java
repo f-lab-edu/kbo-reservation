@@ -14,7 +14,7 @@ class RedisConnectionTest {
 	private RedisTemplate<String, String> redisTemplate;
 
 	@Test
-	void testRedisConnection() {
+	void 레디스_연결_성공() {
 		ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
 		valueOperations.set("testKey", "testValue");
 

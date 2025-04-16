@@ -25,7 +25,7 @@ class StadiumServiceTest {
 	private static final int CAPACITY = 25_000;
 
 	@Test
-	void should_throwException_when_invalidInput() {
+	void 경기장명_입력하지_않을_경우_예외발생() {
 		assertThatThrownBy(() -> stadiumService.save("", CAPACITY))
 			.isInstanceOf(IllegalArgumentException.class);
 		assertThatThrownBy(() -> stadiumService.save(NAME, -1))
@@ -33,8 +33,7 @@ class StadiumServiceTest {
 	}
 
 	@Test
-	void should_throwException_when_duplicateName() {
-		Stadium stadium = new Stadium(NAME, CAPACITY);
+	void 경기장_중복_저장할_경우_예외발생() {
 		when(stadiumRepository.existsByName(NAME)).thenReturn(true);
 
 		assertThatThrownBy(() -> stadiumService.save(NAME, CAPACITY))
@@ -44,7 +43,7 @@ class StadiumServiceTest {
 	}
 
 	@Test
-	void should_saveStadium_when_validInput() {
+	void 경기장_저장_성공() {
 		when(stadiumRepository.save(any(Stadium.class))).thenReturn(new Stadium(NAME, CAPACITY));
 
 		Stadium result = stadiumService.save(NAME, CAPACITY);

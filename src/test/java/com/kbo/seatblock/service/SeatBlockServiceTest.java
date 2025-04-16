@@ -33,7 +33,7 @@ class SeatBlockServiceTest {
 	private static final Stadium STADIUM = StadiumFixture.get();
 
 	@Test
-	void should_throwException_when_invalidInput() {
+	void 블럭명_입력되지_않을_경우_예외발생() {
 		assertThatThrownBy(() -> seatBlockService.save("", SEAT_COUNT, STADIUM_ID))
 			.isInstanceOf(IllegalArgumentException.class);
 		assertThatThrownBy(() -> seatBlockService.save(NAME, -1, STADIUM_ID))
@@ -41,7 +41,7 @@ class SeatBlockServiceTest {
 	}
 
 	@Test
-	void should_throwException_when_duplicateName() {
+	void 좌석블럭_중복_저장할_경우_예외발생() {
 		when(seatBlockRepository.existsByName(anyString())).thenReturn(true);
 
 		assertThatThrownBy(() -> seatBlockService.save(NAME, SEAT_COUNT, STADIUM_ID))
@@ -49,7 +49,7 @@ class SeatBlockServiceTest {
 	}
 
 	@Test
-	void should_throwException_when_overSeatCount() {
+	void 경기장_수용인원_초과하여_등록할_경우_예외발생() {
 		Stadium stadium = StadiumFixture.get();
 		stadium.allocateSeatCount(25_000);
 		when(stadiumService.getStadium(anyLong())).thenReturn(stadium);
@@ -60,7 +60,7 @@ class SeatBlockServiceTest {
 	}
 
 	@Test
-	void should_saveSeatBlock_when_validInput() {
+	void 좌석블럭_저장_성공() {
 		when(stadiumService.getStadium(anyLong())).thenReturn(STADIUM);
 		when(seatBlockRepository.save(any(SeatBlock.class))).thenReturn(
 			new SeatBlock(NAME, SEAT_COUNT, STADIUM));

@@ -40,7 +40,7 @@ class TeamServiceTest {
 	}
 
 	@Test
-	void should_throwException_when_duplicateName() {
+	void 팀_중복_저장할_경우_예외발생() {
 		when(teamRepository.existsByName(anyString())).thenReturn(true);
 
 		assertThatThrownBy(() -> teamService.save(NAME, STADIUM_ID))
@@ -50,7 +50,7 @@ class TeamServiceTest {
 	}
 
 	@Test
-	void should_saveTeam_when_validInput() {
+	void 팀_저장_성공() {
 		Stadium stadium = team.getStadium();
 
 		when(stadiumService.getStadium(anyLong())).thenReturn(stadium);

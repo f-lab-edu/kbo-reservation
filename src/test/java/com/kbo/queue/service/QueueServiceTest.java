@@ -32,7 +32,7 @@ class QueueServiceTest {
 	private static final long USER_ID = 2001L;
 
 	@Test
-	void should_join_when_user() {
+	void 대기열_진입_성공() {
 		when(queueRepository.score(GAME_ID, USER_ID)).thenReturn(null);
 
 		doNothing().when(queueSessionRepository).saveSession(any(QueueSession.class), anyLong());
@@ -50,7 +50,7 @@ class QueueServiceTest {
 	}
 
 	@Test
-	void should_join_when_existsUser() {
+	void 대기열_재진입_성공() {
 		when(queueRepository.score(GAME_ID, USER_ID)).thenReturn(1.1);
 
 		doNothing().when(queueSessionRepository).saveSession(any(QueueSession.class), anyLong());

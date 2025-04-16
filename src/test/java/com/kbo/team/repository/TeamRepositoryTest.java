@@ -24,7 +24,7 @@ class TeamRepositoryTest {
 	private static final int CAPACITY = 25_000;
 
 	@Test
-	void should_saveTeam_when_validInput() {
+	void 팀_저장_성공() {
 		Stadium stadium = stadiumRepository.save(new Stadium(NAME, CAPACITY));
 		Team team = new Team("두산베어스", stadium);
 
