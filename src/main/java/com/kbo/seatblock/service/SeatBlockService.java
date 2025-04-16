@@ -7,6 +7,8 @@ import org.springframework.util.StringUtils;
 import com.kbo.exception.CustomAlreadyExistsException;
 import com.kbo.seatblock.entity.SeatBlock;
 import com.kbo.seatblock.repository.SeatBlockRepository;
+import com.kbo.seatgrade.entity.SeatGrade;
+import com.kbo.seatgrade.service.SeatGradeService;
 import com.kbo.stadium.entity.Stadium;
 import com.kbo.stadium.service.StadiumService;
 
@@ -14,14 +16,20 @@ import com.kbo.stadium.service.StadiumService;
 public class SeatBlockService {
 	private final SeatBlockRepository seatBlockRepository;
 	private final StadiumService stadiumService;
+	private final SeatGradeService seatGradeService;
 
-	public SeatBlockService(SeatBlockRepository seatBlockRepository, StadiumService stadiumService) {
+	public SeatBlockService(
+		SeatBlockRepository seatBlockRepository,
+		StadiumService stadiumService,
+		SeatGradeService seatGradeService
+	) {
 		this.seatBlockRepository = seatBlockRepository;
 		this.stadiumService = stadiumService;
+		this.seatGradeService = seatGradeService;
 	}
 
 	@Transactional
-	public SeatBlock save(String name, int seatCount, long stadiumId) {
+	public SeatBlock save(String name, int seatCount, long stadiumId, long seatGradeId) {
 		validateInputs(name, seatCount);
 
 		if (seatBlockRepository.existsByName(name)) {
@@ -29,7 +37,8 @@ public class SeatBlockService {
 		}
 
 		Stadium stadium = stadiumService.getStadium(stadiumId);
-		return seatBlockRepository.save(new SeatBlock(name, seatCount, stadium));
+		SeatGrade seatGrade = seatGradeService.getSeatGrade(seatGradeId);
+		return seatBlockRepository.save(new SeatBlock(name, seatCount, stadium, seatGrade));
 	}
 
 	private void validateInputs(String name, int seatCount) {

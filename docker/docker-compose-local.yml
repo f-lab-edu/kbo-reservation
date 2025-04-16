@@ -14,11 +14,14 @@ services:
     image: mysql
     container_name: mysql-database
     build:
-      dockerfile: database/Dockerfile
+      dockerfile: Dockerfile
       context: database
     environment:
       - MYSQL_DATABASE=kbo-reserve
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     ports:
       - "3306:3306"
+    volumes:
+      - ./database/config:/etc/mysql/conf.d
+      - ./database/init:/docker-entrypoint-initdb.d
     restart: unless-stopped
