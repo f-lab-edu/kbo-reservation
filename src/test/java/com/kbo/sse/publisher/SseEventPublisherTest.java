@@ -28,7 +28,7 @@ class SseEventPublisherTest {
 	}
 
 	@Test
-	void should_publish_when_valid() {
+	void 유효한_게임ID일_경우_이벤트_발행_성공() {
 		sseEventPublisher.publish(GAME_ID);
 
 		verify(redisTemplate, times(1))
@@ -41,7 +41,7 @@ class SseEventPublisherTest {
 	}
 
 	@Test
-	void should_throwException_when_invalid() {
+	void 유효하지_않은_게임ID일_경우_예외발생() {
 		sseEventPublisher.publish(999L);
 
 		assertThrows(AssertionError.class, () -> verify(redisTemplate, times(1))
@@ -54,7 +54,7 @@ class SseEventPublisherTest {
 	}
 
 	@Test
-	void should_throwException_when_invalidChannel() {
+	void 유효하지_않은_채널일_경우_예외발생() {
 		sseEventPublisher.publish(GAME_ID);
 
 		assertThrows(AssertionError.class, () -> verify(redisTemplate, times(1))

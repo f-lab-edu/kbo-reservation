@@ -20,7 +20,7 @@ class SubscriptionManagerTest {
 	}
 
 	@Test
-	void should_add_when_valid() {
+	void 유효한_요청일_경우_구독자_추가_성공() {
 		SseEmitter emitter = new SseEmitter();
 
 		subscriptionManager.add(GAME_ID, USER_ID, emitter);
@@ -30,7 +30,7 @@ class SubscriptionManagerTest {
 	}
 
 	@Test
-	void should_remove_when_valid() {
+	void 유효한_요청일_경우_구독자_제거_성공() {
 		SseEmitter emitter = new SseEmitter();
 		subscriptionManager.add(GAME_ID, USER_ID, emitter);
 

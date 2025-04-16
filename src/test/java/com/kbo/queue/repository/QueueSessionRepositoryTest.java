@@ -26,7 +26,7 @@ class QueueSessionRepositoryTest {
 	}
 
 	@Test
-	void should_saveSession_when_user() {
+	void 대기열_세션_저장_성공() {
 		queueSessionRepository.saveSession(queueSession, SESSION_TTL_SECONDS);
 
 		QueueSession session = queueSessionRepository.getSession(queueSession.token());
@@ -38,7 +38,7 @@ class QueueSessionRepositoryTest {
 	}
 
 	@Test
-	void should_isSessionExpired_when_success() throws InterruptedException {
+	void 대기열_세션_만료_확인_성공() throws InterruptedException {
 		queueSessionRepository.saveSession(queueSession, SESSION_TTL_SECONDS);
 
 		Thread.sleep(2000);

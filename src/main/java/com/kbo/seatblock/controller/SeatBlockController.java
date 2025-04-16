@@ -10,7 +10,7 @@ import com.kbo.seatblock.controller.response.SeatBlockResponse;
 import com.kbo.seatblock.service.SeatBlockService;
 
 @RestController
-@RequestMapping("/seatBlocks")
+@RequestMapping("/seat-blocks")
 public class SeatBlockController {
 	private final SeatBlockService seatBlockService;
 

@@ -28,7 +28,7 @@ class SseEventListenerTest {
 	}
 
 	@Test
-	void should_process_when_valid() {
+	void 유효한_메시지일_경우_이벤트_전송_성공() {
 		String payload = "{\"gameId\":" + GAME_ID + "}";
 		Message redisMessage = mock(Message.class);
 		when(redisMessage.getBody()).thenReturn(payload.getBytes());
@@ -39,7 +39,7 @@ class SseEventListenerTest {
 	}
 
 	@Test
-	void should_throwException_when_parsingFailed() {
+	void 유효하지_않은_메시지일_경우_예외_없이_무시() {
 		String payload = "{invalid_json}";
 		Message redisMessage = mock(Message.class);
 		when(redisMessage.getBody()).thenReturn(payload.getBytes());

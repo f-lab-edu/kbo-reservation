@@ -23,7 +23,7 @@ class QueueRepositoryTest {
 	}
 
 	@Test
-	void should_add_when_user() {
+	void 단건_사용자_대기열_추가_성공() {
 		queueRepository.add(GAME_ID, USER_ID_1);
 
 		Long rank = queueRepository.rank(GAME_ID, USER_ID_1);
@@ -32,7 +32,7 @@ class QueueRepositoryTest {
 	}
 
 	@Test
-	void should_add_when_users() {
+	void 다건_사용자_대기열_추가_성공() {
 		queueRepository.add(GAME_ID, USER_ID_1);
 		queueRepository.add(GAME_ID, USER_ID_2);
 
@@ -41,7 +41,7 @@ class QueueRepositoryTest {
 	}
 
 	@Test
-	void should_score_when_user() {
+	void 단건_사용자_대기열_추가후_스코어_조회_성공() {
 		queueRepository.add(GAME_ID, USER_ID_1);
 
 		Double score = queueRepository.score(GAME_ID, USER_ID_1);
