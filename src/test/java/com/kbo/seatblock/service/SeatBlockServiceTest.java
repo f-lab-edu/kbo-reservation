@@ -41,7 +41,7 @@ class SeatBlockServiceTest {
 	private static final SeatGrade SEAT_GRADE = SeatGradeFixture.get(STADIUM);
 
 	@Test
-	void should_throwException_when_invalidInput() {
+	void 블럭명_입력되지_않을_경우_예외발생() {
 		assertThatThrownBy(() -> seatBlockService.save("", SEAT_COUNT, STADIUM_ID, SEAT_GRADE_ID))
 			.isInstanceOf(IllegalArgumentException.class);
 		assertThatThrownBy(() -> seatBlockService.save(NAME, -1, STADIUM_ID, SEAT_GRADE_ID))

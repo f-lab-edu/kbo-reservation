@@ -41,7 +41,7 @@ class SeatBlockRepositoryTest {
 	}
 
 	@Test
-	void should_findSeatBlock_when_validName() {
+	void 좌석블럭_존재_확인_성공() {
 		seatBlockRepository.save(SeatBlockFixture.get(NAME, SEAT_COUNT, stadium, seatGrade));
 
 		boolean result = seatBlockRepository.existsByName(NAME);
