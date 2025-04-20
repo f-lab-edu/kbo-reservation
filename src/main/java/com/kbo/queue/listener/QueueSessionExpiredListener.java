@@ -38,11 +38,6 @@ public class QueueSessionExpiredListener extends KeyExpirationEventMessageListen
 			return;
 		}
 
-		if (expiredKey.length() != SESSION_PREFIX.length()) {
-			log.error("Session key has no token: {}", expiredKey);
-			return;
-		}
-
 		String token = expiredKey.substring(SESSION_PREFIX.length());
 
 		if (!isValidToken(token)) {
